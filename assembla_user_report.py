@@ -5,7 +5,7 @@ import sendgrid
 from datetime import datetime, timedelta
 from dateutil import tz
 from dateutil.parser import parse
-from settings.mail import email_to, email_subject, colors
+from settings.mail import email_to, email_subject, colors, email_from
 
 #run this code once at the end of day, or setup a crontab.
 
@@ -77,7 +77,7 @@ def main():
     if not holiday:
         tday = datetime.now()
         subject = "%s %s" % (email_subject, tday.strftime("%b %d %Y"))
-        message = sendgrid.Message("ramana@agiliq.com", subject, "", "<div>" + html + "</div>")
+        message = sendgrid.Message(email_from, subject, "", "<div>" + html + "</div>")
         for person in email_to:
             message.add_to(person[0], person[1])
         sender.smtp.send(message)
